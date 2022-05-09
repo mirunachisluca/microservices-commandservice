@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using CommandService.DTOs;
 using CommandService.Models;
+using CommandService.Protos;
 
 namespace CommandService.Profiles
 {
@@ -14,6 +15,8 @@ namespace CommandService.Profiles
             CreateMap<Command, CommandReadDTO>();
             CreateMap<PlatformPublishedDTO, Platform>()
                 .ForMember(d => d.ExternalId, opt => opt.MapFrom(s => s.Id));
+            CreateMap<GrpcPlatformModel, Platform>()
+                .ForMember(d => d.ExternalId, opt => opt.MapFrom(s => s.PlatformId));
         }
     }
 }

@@ -1,6 +1,7 @@
 using CommandService.AsyncDataServices;
 using CommandService.Data;
 using CommandService.EventProcessing;
+using CommandService.SyncDataServices.Grpc;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -17,9 +18,12 @@ builder.Services.AddDbContext<AppDbContext>(opt=>opt.UseInMemoryDatabase("Comman
 builder.Services.AddScoped<ICommandRepository, CommandRepository>();
 
 builder.Services.AddSingleton<IEventProcessor, EventProcessor>();
+builder.Services.AddScoped<IPlatformDataClient, PlatformDataClient>();
 builder.Services.AddHostedService<MessageBusSubscriber>();
 
 var app = builder.Build();
+
+PrepDb.PrepPopulation(app);
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
